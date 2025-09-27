@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Professional Tattoos - Catálogo</title>
+    <style>
+        /* === ESTILOS GENERALES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === HEADER Y NAVEGACIÓN === */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 100%);
+            padding: 20px 0;
+            border-bottom: 3px solid #ff6b6b;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2em;
+        }
+
+        .admin-panel {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* === PANEL DE ADMINISTRACIÓN (OCULTO INICIALMENTE) === */
+        #adminPanel {
+            display: none;
+            background: #1a1a1a;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid #ff6b6b;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 15px;
+            max-width: 500px;
+        }
+
+        .admin-form input, .admin-form select, .admin-form textarea {
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .admin-form button {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+
+        /* === FILTROS Y BUSCADOR === */
+        .filters-section {
+            padding: 40px 0;
+            background: #1a1a1a;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            background: #2a2a2a;
+            border: 2px solid #333;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #ff6b6b;
+        }
+
+        /* === GRILLA DE TATUAJES === */
+        .gallery-section {
+            padding: 60px 0;
+        }
+
+        .tattoo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tattoo-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #333;
+        }
+
+        .tattoo-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tattoo-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .tattoo-info {
+            padding: 20px;
+        }
+
+        .tattoo-info h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .tattoo-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .size {
+            color: #ffa726;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* === FORMULARIO WHATSAPP === */
+        .contact-section {
+            background: #1a1a1a;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .whatsapp-form {
+            max-width: 500px;
+            margin: 30px auto 0;
+            display: grid;
+            gap: 15px;
+        }
+
+        .whatsapp-form input, .whatsapp-form textarea {
+            padding: 15px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .tattoo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>🎨 Studio Professional Tattoos</h1>
+                </div>
+                <button class="admin-panel" onclick="toggleAdmin()">Panel de Administración</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PANEL DE ADMINISTRACIÓN -->
+    <div class="container">
+        <div id="adminPanel">
+            <h2>➕ Añadir Nuevo Tatuaje</h2>
+            <form class="admin-form" id="addTattooForm">
+                <input type="text" id="tattooName" placeholder="Nombre del tatuaje" required>
+                <input type="url" id="tattooImage" placeholder="URL de la imagen" required>
+                <input type="number" id="tattooPrice" placeholder="Precio en USD" required>
+                <input type="text" id="tattooSize" placeholder="Tamaño (ej: 10x15 cm)" required>
+                <select id="tattooCategory" required>
+                    <option value="">Seleccionar categoría</option>
+                    <option value="blackwork">Blackwork</option>
+                    <option value="color">Color</option>
+                    <option value="minimalista">Minimalista</option>
+                    <option value="tradicional">Tradicional</option>
+                </select>
+                <select id="tattooZone" required>
+                    <option value="">Zona del cuerpo</option>
+                    <option value="brazo">Brazo</option>
+                    <option value="pierna">Pierna</option>
+                    <option value="espalda">Espalda</option>
+                    <option value="pecho">Pecho</option>
+                    <option value="mano">Mano</option>
+                </select>
+                <textarea id="tattooDescription" placeholder="Descripción" rows="3"></textarea>
+                <button type="submit">Guardar Tatuaje</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h2>Catálogo Exclusivo de Tatuajes</h2>
+            <p>Diseños profesionales personalizados para ti</p>
+        </div>
+    </section>
+
+    <!-- FILTROS Y BUSCADOR -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tatuajes...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+                <button class="filter-btn" data-filter="color">Color</button>
+                <button class="filter-btn" data-filter="minimalista">Minimalista</button>
+                <button class="filter-btn" data-filter="tradicional">Tradicional</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRILLA DE TATUAJES -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="tattoo-grid" id="tattooGrid">
+                <!-- Los tatuajes se cargarán aquí automáticamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO WHATSAPP -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>¿Te interesa algún diseño?</h2>
+            <p>Contáctanos directamente por WhatsApp</p>
+            <form class="whatsapp-form" id="whatsappForm">
+                <input type="text" id="clientName" placeholder="Tu nombre" required>
+                <select id="selectedTattoo" required>
+                    <option value="">Selecciona un tatuaje</option>
+                </select>
+                <textarea id="clientMessage" placeholder="Cuéntanos sobre tu idea..." rows="4"></textarea>
+                <button type="submit" class="whatsapp-btn">💬 Enviar por WhatsApp</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // ===== SISTEMA DE ADMINISTRACIÓN =====
+        
+        // Datos de ejemplo (se guardan en el localStorage del navegador)
+        let tattoos = JSON.parse(localStorage.getItem('tattoos')) || [
+            {
+                id: 1,
+                name: "Dragon Blackwork",
+                image: "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=400",
+                price: 150,
+                size: "15x20 cm",
+                category: "blackwork",
+                zone: "espalda",
+                description: "Diseño de dragón en estilo blackwork"
+            },
+            {
+                id: 2,
+                name: "Floral Color",
+                image: "https://images.unsplash.com/photo-1577985051168-1a07a3aab7ad?w=400",
+                price: 200,
+                size: "10x15 cm",
+                category: "color",
+                zone: "brazo",
+                description: "Composición floral a color"
+            }
+        ];
+
+        // Guardar datos en localStorage
+        function saveTattoos() {
+            localStorage.setItem('tattoos', JSON.stringify(tattoos));
+        }
+
+        // Mostrar/ocultar panel de administración
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Añadir nuevo tatuaje
+        document.getElementById('addTattooForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newTattoo = {
+                id: tattoos.length + 1,
+                name: document.getElementById('tattooName').value,
+                image: document.getElementById('tattooImage').value,
+                price: parseInt(document.getElementById('tattooPrice').value),
+                size: document.getElementById('tattooSize').value,
+                category: document.getElementById('tattooCategory').value,
+                zone: document.getElementById('tattooZone').value,
+                description: document.getElementById('tattooDescription').value
+            };
+            
+            tattoos.push(newTattoo);
+            saveTattoos();
+            loadTattoos();
+            this.reset();
+            
+            alert('✅ Tatuaje añadido correctamente!');
+        });
+
+        // Eliminar tatuaje
+        function deleteTattoo(id) {
+            if (confirm('¿Estás seguro de eliminar este tatuaje?')) {
+                tattoos = tattoos.filter(tattoo => tattoo.id !== id);
+                saveTattoos();
+                loadTattoos();
+            }
+        }
+
+        // ===== MOSTRAR TATUAJES EN LA PÁGINA =====
+        function loadTattoos(filter = 'all') {
+            const grid = document.getElementById('tattooGrid');
+            const select = document.getElementById('selectedTattoo');
+            
+            // Limpiar selects
+            select.innerHTML = '<option value="">Selecciona un tatuaje</option>';
+            
+            // Filtrar tatuajes
+            const filteredTattoos = filter === 'all' ? tattoos : tattoos.filter(t => t.category === filter);
+            
+            // Mostrar en la grilla
+            grid.innerHTML = filteredTattoos.map(tattoo => `
+                <div class="tattoo-card" data-category="${tattoo.category}">
+                    <img src="${tattoo.image}" alt="${tattoo.name}" class="tattoo-image">
+                    <div class="tattoo-info">
+                        <h3>${tattoo.name}</h3>
+                        <div class="tattoo-meta">
+                            <span class="price">$${tattoo.price} USD</span>
+                            <span class="size">${tattoo.size}</span>
+                        </div>
+                        <p><strong>Categoría:</strong> ${tattoo.category}</p>
+                        <p><strong>Zona:</strong> ${tattoo.zone}</p>
+                        <p>${tattoo.description}</p>
+                        <button class="delete-btn" onclick="deleteTattoo(${tattoo.id})">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Llenar select del formulario
+            tattoos.forEach(tattoo => {
+                const option = document.createElement('option');
+                option.value = tattoo.name;
+                option.textContent = tattoo.name;
+                select.appendChild(option);
+            });
+        }
+
+        // ===== FILTROS Y BÚSQUEDA =====
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadTattoos(this.dataset.filter);
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.tattoo-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                card.style.display = name.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // ===== FORMULARIO WHATSAPP =====
+        document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('clientName').value;
+            const tattoo = document.getElementById('selectedTattoo').value;
+            const message = document.getElementById('clientMessage').value;
+            
+            // ⚠️ REEMPLAZA ESTE NÚMERO CON EL TUYO ⚠️
+            const phoneNumber = "535XXXXXXX"; // Ejemplo: "5351234567"
+            
+            const fullMessage = `Hola, soy ${name}. Me interesa el tatuaje: ${tattoo}. ${message}`;
+            const encodedMessage = encodeURIComponent(fullMessage);
+            
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+        });
+
+        // ===== INICIALIZAR LA PÁGINA =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTattoos();
+        });
+    </script>
+</body>
+</html>
