@@ -1,1 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Professional Tattoos - Catálogo</title>
+    <!-- ESTILOS (se mantienen igual) -->
+    <style>
+        /* === ESTILOS GENERALES === */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* === HEADER === */
+        
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 100%);
+            padding: 20px 0;
+            border-bottom: 3px solid #ff6b6b;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2em;
+        }
+        
+        .admin-link {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .admin-link:hover {
+            background: #ff5252;
+        }
+        /* === HERO SECTION === */
+        
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+        }
+        
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        /* === FILTROS Y BUSCADOR === */
+        
+        .filters-section {
+            padding: 40px 0;
+            background: #1a1a1a;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            background: #2a2a2a;
+            border: 2px solid #333;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #ff6b6b;
+        }
+        /* === GRILLA DE TATUAJES === */
+        
+        .gallery-section {
+            padding: 60px 0;
+        }
+        
+        .tattoo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .tattoo-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #333;
+        }
+        
+        .tattoo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
+        }
+        
+        .tattoo-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .tattoo-info {
+            padding: 20px;
+        }
+        
+        .tattoo-info h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+        
+        .tattoo-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+        
+        .size {
+            color: #ffa726;
+        }
+        /* === FORMULARIO WHATSAPP === */
+        
+        .contact-section {
+            background: #1a1a1a;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .whatsapp-form {
+            max-width: 500px;
+            margin: 30px auto 0;
+            display: grid;
+            gap: 15px;
+        }
+        
+        .whatsapp-form input,
+        .whatsapp-form textarea,
+        .whatsapp-form select {
+            padding: 15px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        /* === RESPONSIVE === */
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .tattoo-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h2 {
+                font-size: 2em;
+            }
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ffa726;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>🎨 Studio Professional Tattoos</h1>
+                </div>
+                <a href="admin.html" class="admin-link">🔐 Panel de Administración</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h2>Catálogo Exclusivo de Tatuajes</h2>
+            <p>Diseños profesionales personalizados para ti</p>
+        </div>
+    </section>
+
+    <!-- FILTROS Y BUSCADOR -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tatuajes...">
+            </div>
+            <div class="filter-buttons" id="categoryFilters">
+                <!-- Las categorías se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- GRILLA DE TATUAJES -->
+    <section class="gallery-section">
+        <div class="container">
+            <div id="loadingMessage" class="loading">Cargando catálogo...</div>
+            <div class="tattoo-grid" id="tattooGrid">
+                <!-- Los tatuajes se cargarán aquí automáticamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO WHATSAPP -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>¿Te interesa algún diseño?</h2>
+            <p>Contáctanos directamente por WhatsApp</p>
+            <form class="whatsapp-form" id="whatsappForm">
+                <input type="text" id="clientName" placeholder="Tu nombre" required>
+                <select id="selectedTattoo" required>
+                    <option value="">Selecciona un tatuaje</option>
+                </select>
+                <textarea id="clientMessage" placeholder="Cuéntanos sobre tu idea..." rows="4"></textarea>
+                <button type="submit" class="whatsapp-btn">💬 Enviar por WhatsApp</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== CONFIGURACIÓN DE FIREBASE =====
+        // ⚠️ REEMPLAZA ESTA CONFIGURACIÓN CON LA DE TU PROYECTO FIREBASE ⚠️
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT3CWJ25CLJXpiIFLImi8MSI1udLdUvUI",
+            authDomain: "catalogo-de-tattoos.firebaseapp.com",
+            projectId: "catalogo-de-tattoos",
+            storageBucket: "catalogo-de-tattoos.firebasestorage.app",
+            messagingSenderId: "138266786749",
+            appId: "1:138266786749:web:130590b643cb19524870d4"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ===== SISTEMA DEL CATÁLOGO PÚBLICO =====
+        let tattoos = [];
+        let categories = [];
+
+        // Cargar categorías desde Firestore
+        async function loadCategories() {
+            try {
+                const querySnapshot = await db.collection("categories").get();
+                categories = [];
+
+                querySnapshot.forEach((doc) => {
+                    categories.push(doc.data().name);
+                });
+
+                // Si no hay categorías, crear algunas por defecto
+                if (categories.length === 0) {
+                    const defaultCategories = [
+                        'blackwork', 'color', 'minimalista', 'tradicional',
+                        'geometrico', 'realista', 'acuarela', 'japonés'
+                    ];
+
+                    for (const category of defaultCategories) {
+                        await db.collection("categories").add({
+                            name: category,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+
+                    categories = defaultCategories;
+                }
+
+                renderCategories();
+            } catch (error) {
+                console.error("Error cargando categorías:", error);
+                // Usar categorías por defecto en caso de error
+                categories = ['blackwork', 'color', 'minimalista', 'tradicional', 'geometrico', 'realista', 'acuarela', 'japonés'];
+                renderCategories();
+            }
+        }
+
+        // Mostrar categorías en los filtros
+        function renderCategories() {
+            const filtersContainer = document.getElementById('categoryFilters');
+            filtersContainer.innerHTML = '';
+
+            // Botón "Todos"
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn active';
+            allButton.textContent = 'Todos';
+            allButton.setAttribute('data-category', 'all');
+            allButton.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                loadTattoos();
+            });
+            filtersContainer.appendChild(allButton);
+
+            // Botones para cada categoría
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                button.setAttribute('data-category', category);
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    loadTattoos(category);
+                });
+                filtersContainer.appendChild(button);
+            });
+        }
+
+        // Cargar tatuajes desde Firestore
+        async function loadTattoos(filterCategory = 'all') {
+            try {
+                document.getElementById('loadingMessage').style.display = 'block';
+                document.getElementById('tattooGrid').innerHTML = '';
+
+                let query = db.collection("tattoos").orderBy("createdAt", "desc");
+
+                if (filterCategory !== 'all') {
+                    query = query.where("category", "==", filterCategory);
+                }
+
+                const querySnapshot = await query.get();
+                tattoos = [];
+
+                querySnapshot.forEach((doc) => {
+                    tattoos.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                renderTattoos();
+                document.getElementById('loadingMessage').style.display = 'none';
+            } catch (error) {
+                console.error("Error cargando tatuajes:", error);
+                document.getElementById('loadingMessage').innerHTML = 'Error cargando el catálogo. Intenta recargar la página.';
+            }
+        }
+
+        // Mostrar tatuajes en la página
+        function renderTattoos() {
+            const grid = document.getElementById('tattooGrid');
+            const select = document.getElementById('selectedTattoo');
+
+            // Limpiar selects
+            select.innerHTML = '<option value="">Selecciona un tatuaje</option>';
+
+            // Mostrar en la grilla
+            grid.innerHTML = tattoos.map(tattoo => `
+                <div class="tattoo-card" data-category="${tattoo.category}">
+                    <img src="${tattoo.image}" alt="${tattoo.name}" class="tattoo-image" onerror="this.src='https://via.placeholder.com/300x200/1a1a1a/ffffff?text=Imagen+no+disponible'">
+                    <div class="tattoo-info">
+                        <h3>${tattoo.name}</h3>
+                        <div class="tattoo-meta">
+                            <span class="price">$${tattoo.price} CUP</span>
+                            <span class="size">${tattoo.size}</span>
+                        </div>
+                        <p><strong>Categoría:</strong> ${tattoo.category}</p>
+                        <p><strong>Zona:</strong> ${tattoo.zone}</p>
+                        <p>${tattoo.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Llenar select del formulario WhatsApp
+            tattoos.forEach(tattoo => {
+                const option = document.createElement('option');
+                option.value = tattoo.name;
+                option.textContent = tattoo.name;
+                select.appendChild(option);
+            });
+        }
+
+        // ===== FILTROS Y BÚSQUEDA =====
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const activeCategory = document.querySelector('#categoryFilters .filter-btn.active').dataset.category;
+
+            const filteredTattoos = activeCategory === 'all' ?
+                tattoos :
+                tattoos.filter(t => t.category === activeCategory);
+
+            const searchResults = filteredTattoos.filter(tattoo =>
+                tattoo.name.toLowerCase().includes(searchTerm) ||
+                tattoo.description.toLowerCase().includes(searchTerm) ||
+                tattoo.zone.toLowerCase().includes(searchTerm)
+            );
+
+            const grid = document.getElementById('tattooGrid');
+            grid.innerHTML = searchResults.map(tattoo => `
+                <div class="tattoo-card">
+                    <img src="${tattoo.image}" alt="${tattoo.name}" class="tattoo-image" onerror="this.src='https://via.placeholder.com/300x200/1a1a1a/ffffff?text=Imagen+no+disponible'">
+                    <div class="tattoo-info">
+                        <h3>${tattoo.name}</h3>
+                        <div class="tattoo-meta">
+                            <span class="price">$${tattoo.price} CUP</span>
+                            <span class="size">${tattoo.size}</span>
+                        </div>
+                        <p><strong>Categoría:</strong> ${tattoo.category}</p>
+                        <p><strong>Zona:</strong> ${tattoo.zone}</p>
+                        <p>${tattoo.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        // ===== FORMULARIO WHATSAPP =====
+        document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('clientName').value;
+            const tattoo = document.getElementById('selectedTattoo').value;
+            const message = document.getElementById('clientMessage').value;
+
+            // ⚠️ REEMPLAZA ESTE NÚMERO CON EL TUYO ⚠️
+            const phoneNumber = "+5355549887";
+
+            const fullMessage = `Hola, soy ${name}. Me interesa el tatuaje: ${tattoo}. ${message}`;
+            const encodedMessage = encodeURIComponent(fullMessage);
+
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappURL, '_blank');
+        });
+
+        // ===== INICIALIZAR LA PÁGINA =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategories();
+            loadTattoos();
+        });
+    </script>
+</body>
+
+</html>

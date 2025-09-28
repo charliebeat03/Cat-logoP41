@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Studio Professional Tattoos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container,
+        .admin-container {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #ff6b6b;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .admin-container {
+            max-width: 800px;
+            display: none;
+        }
+        
+        h1,
+        h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffa726;
+        }
+        
+        input,
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #ff5252;
+        }
+        
+        .category-management {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .categories-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .category-tag {
+            background: #ff6b6b;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 20px;
+        }
+        
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .tattoo-list {
+            margin-top: 30px;
+        }
+        
+        .tattoo-item {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .tattoo-info {
+            flex-grow: 1;
+        }
+        
+        .delete-btn {
+            background: #ff4757;
+            width: auto;
+            padding: 8px 15px;
+            margin-left: 10px;
+        }
+        
+        .error-message {
+            color: #ff4757;
+            margin-top: 10px;
+        }
+        
+        .success-message {
+            color: #2ed573;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- PANTALLA DE LOGIN -->
+    <div class="login-container" id="loginContainer">
+        <h1>🔐 Acceso Administración</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" required placeholder="admin@ejemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" required placeholder="Ingresa tu contraseña">
+            </div>
+            <button type="submit">Entrar al Panel</button>
+            <div id="loginMessage" class="error-message"></div>
+        </form>
+        <div style="margin-top: 20px; text-align: center;">
+            <p>¿Primera vez? <a href="#" id="registerLink" style="color: #4ecdc4;">Registrar administrador</a></p>
+        </div>
+    </div>
+
+    <!-- PANEL DE ADMINISTRACIÓN -->
+    <div class="admin-container" id="adminContainer">
+        <h1>🎨 Panel de Administración</h1>
+
+        <!-- Gestión de Categorías -->
+        <div class="category-management">
+            <h2>📂 Gestión de Categorías</h2>
+            <div class="form-group">
+                <input type="text" id="newCategoryName" placeholder="Nueva categoría (ej: geométrico)">
+                <button type="button" id="addCategoryBtn">➕ Añadir Categoría</button>
+                <div id="categoryMessage"></div>
+            </div>
+            <div class="categories-list" id="categoriesList">
+                <!-- Las categorías se cargarán aquí -->
+            </div>
+        </div>
+
+        <!-- Añadir Nuevo Tatuaje -->
+        <h2>➕ Añadir Nuevo Tatuaje</h2>
+        <form id="addTattooForm">
+            <div class="form-group">
+                <label for="tattooName">Nombre del tatuaje:</label>
+                <input type="text" id="tattooName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tattooImage">URL de la imagen:</label>
+                <input type="url" id="tattooImage" required placeholder="https://ejemplo.com/imagen.jpg">
+                <small>💡 Consejo: Puedes subir imágenes a <a href="https://imgbb.com/" target="_blank" style="color: #4ecdc4;">imgbb.com</a> gratis y usar el enlace directo</small>
+                <img id="imagePreview" class="image-preview" alt="Vista previa">
+            </div>
+
+            <div class="form-group">
+                <label for="tattooPrice">Precio (CUP):</label>
+                <input type="number" id="tattooPrice" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tattooSize">Tamaño aproximado:</label>
+                <input type="text" id="tattooSize" required placeholder="10x15 cm">
+            </div>
+
+            <div class="form-group">
+                <label for="tattooCategory">Categoría:</label>
+                <select id="tattooCategory" required>
+                    <option value="">Seleccionar categoría</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tattooZone">Zona del cuerpo:</label>
+                <select id="tattooZone" required>
+                    <option value="">Seleccionar zona</option>
+                    <option value="brazo">Brazo</option>
+                    <option value="pierna">Pierna</option>
+                    <option value="espalda">Espalda</option>
+                    <option value="pecho">Pecho</option>
+                    <option value="mano">Mano</option>
+                    <option value="cuello">Cuello</option>
+                    <option value="hombro">Hombro</option>
+                    <option value="muslo">Muslo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tattooDescription">Descripción:</label>
+                <textarea id="tattooDescription" rows="3"></textarea>
+            </div>
+
+            <button type="submit">💾 Guardar Tatuaje</button>
+            <div id="tattooMessage"></div>
+        </form>
+
+        <!-- Lista de Tatuajes Existentes -->
+        <div class="tattoo-list">
+            <h2>📋 Tatuajes Existentes</h2>
+            <div id="tattoosList">
+                <!-- Los tatuajes se cargarán aquí -->
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== CONFIGURACIÓN DE FIREBASE =====
+        // ⚠️ REEMPLAZA ESTA CONFIGURACIÓN CON LA DE TU PROYECTO FIREBASE ⚠️
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT3CWJ25CLJXpiIFLImi8MSI1udLdUvUI",
+            authDomain: "catalogo-de-tattoos.firebaseapp.com",
+            projectId: "catalogo-de-tattoos",
+            storageBucket: "catalogo-de-tattoos.firebasestorage.app",
+            messagingSenderId: "138266786749",
+            appId: "1:138266786749:web:130590b643cb19524870d4"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ===== SISTEMA DE AUTENTICACIÓN =====
+        const loginContainer = document.getElementById('loginContainer');
+        const adminContainer = document.getElementById('adminContainer');
+        const loginForm = document.getElementById('loginForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerLink = document.getElementById('registerLink');
+
+        // Verificar si ya está autenticado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                showAdminPanel();
+            } else {
+                showLoginPanel();
+            }
+        });
+
+        // Manejar login
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                loginMessage.textContent = '';
+            } catch (error) {
+                loginMessage.textContent = 'Error: ' + error.message;
+            }
+        });
+
+        // Registrar nuevo administrador
+        registerLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                loginMessage.textContent = 'Por favor, completa ambos campos para registrarte.';
+                return;
+            }
+
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                loginMessage.textContent = '¡Cuenta creada exitosamente! Ya puedes iniciar sesión.';
+            } catch (error) {
+                loginMessage.textContent = 'Error al crear cuenta: ' + error.message;
+            }
+        });
+
+        // Mostrar panel de administración
+        function showAdminPanel() {
+            loginContainer.style.display = 'none';
+            adminContainer.style.display = 'block';
+            loadCategories();
+            loadTattoos();
+            setupImagePreview();
+        }
+
+        // Mostrar panel de login
+        function showLoginPanel() {
+            loginContainer.style.display = 'block';
+            adminContainer.style.display = 'none';
+            loginForm.reset();
+            loginMessage.textContent = '';
+        }
+
+        // Cerrar sesión
+        function logout() {
+            auth.signOut();
+        }
+
+        // ===== GESTIÓN DE CATEGORÍAS =====
+        async function loadCategories() {
+            try {
+                const querySnapshot = await db.collection("categories").orderBy("name").get();
+                const categoriesList = document.getElementById('categoriesList');
+                const categorySelect = document.getElementById('tattooCategory');
+
+                categoriesList.innerHTML = '';
+                categorySelect.innerHTML = '<option value="">Seleccionar categoría</option>';
+
+                querySnapshot.forEach((doc) => {
+                    const category = doc.data().name;
+
+                    // Añadir al select
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    categorySelect.appendChild(option);
+
+                    // Añadir a la lista
+                    const tag = document.createElement('span');
+                    tag.className = 'category-tag';
+                    tag.textContent = category;
+                    categoriesList.appendChild(tag);
+                });
+            } catch (error) {
+                console.error("Error cargando categorías:", error);
+            }
+        }
+
+        // Añadir nueva categoría
+        document.getElementById('addCategoryBtn').addEventListener('click', async function() {
+            const newCategoryInput = document.getElementById('newCategoryName');
+            const categoryMessage = document.getElementById('categoryMessage');
+            const newCategory = newCategoryInput.value.trim().toLowerCase();
+
+            if (!newCategory) {
+                categoryMessage.textContent = 'Por favor, ingresa un nombre para la categoría.';
+                categoryMessage.className = 'error-message';
+                return;
+            }
+
+            try {
+                // Verificar si ya existe
+                const snapshot = await db.collection("categories").where("name", "==", newCategory).get();
+
+                if (!snapshot.empty) {
+                    categoryMessage.textContent = '⚠️ Esta categoría ya existe';
+                    categoryMessage.className = 'error-message';
+                    return;
+                }
+
+                // Crear nueva categoría
+                await db.collection("categories").add({
+                    name: newCategory,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                categoryMessage.textContent = '✅ Categoría añadida correctamente';
+                categoryMessage.className = 'success-message';
+                newCategoryInput.value = '';
+                loadCategories();
+
+                // Limpiar mensaje después de 3 segundos
+                setTimeout(() => {
+                    categoryMessage.textContent = '';
+                }, 3000);
+            } catch (error) {
+                categoryMessage.textContent = 'Error: ' + error.message;
+                categoryMessage.className = 'error-message';
+            }
+        });
+
+        // ===== VISTA PREVIA DE IMAGEN =====
+        function setupImagePreview() {
+            const imageInput = document.getElementById('tattooImage');
+            const imagePreview = document.getElementById('imagePreview');
+
+            imageInput.addEventListener('input', function() {
+                if (this.value) {
+                    imagePreview.src = this.value;
+                    imagePreview.style.display = 'block';
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+            });
+        }
+
+        // ===== GESTIÓN DE TATUAJES =====
+        async function loadTattoos() {
+            try {
+                const querySnapshot = await db.collection("tattoos").orderBy("createdAt", "desc").get();
+                const tattoosList = document.getElementById('tattoosList');
+                tattoosList.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    tattoosList.innerHTML = '<p>No hay tatuajes guardados.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const tattoo = doc.data();
+                    const tattooItem = document.createElement('div');
+                    tattooItem.className = 'tattoo-item';
+                    tattooItem.innerHTML = `
+                        <div class="tattoo-info">
+                            <strong>${tattoo.name}</strong> - $${tattoo.price} CUP - ${tattoo.category}
+                        </div>
+                        <button class="delete-btn" onclick="deleteTattoo('${doc.id}')">🗑️ Eliminar</button>
+                    `;
+                    tattoosList.appendChild(tattooItem);
+                });
+            } catch (error) {
+                console.error("Error cargando tatuajes:", error);
+            }
+        }
+
+        // Añadir nuevo tatuaje
+        document.getElementById('addTattooForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const tattooMessage = document.getElementById('tattooMessage');
+
+            const newTattoo = {
+                name: document.getElementById('tattooName').value,
+                image: document.getElementById('tattooImage').value,
+                price: parseInt(document.getElementById('tattooPrice').value),
+                size: document.getElementById('tattooSize').value,
+                category: document.getElementById('tattooCategory').value,
+                zone: document.getElementById('tattooZone').value,
+                description: document.getElementById('tattooDescription').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await db.collection("tattoos").add(newTattoo);
+
+                tattooMessage.textContent = '✅ Tatuaje añadido correctamente!';
+                tattooMessage.className = 'success-message';
+                document.getElementById('addTattooForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                loadTattoos();
+
+                // Limpiar mensaje después de 3 segundos
+                setTimeout(() => {
+                    tattooMessage.textContent = '';
+                }, 3000);
+            } catch (error) {
+                tattooMessage.textContent = 'Error: ' + error.message;
+                tattooMessage.className = 'error-message';
+            }
+        });
+
+        // Eliminar tatuaje
+        async function deleteTattoo(id) {
+            if (confirm('¿Estás seguro de eliminar este tatuaje?')) {
+                try {
+                    await db.collection("tattoos").doc(id).delete();
+                    loadTattoos();
+                } catch (error) {
+                    console.error("Error eliminando tatuaje:", error);
+                    alert('Error al eliminar el tatuaje');
+                }
+            }
+        }
+
+        // Cargar categorías al iniciar
+        loadCategories();
+    </script>
+</body>
+
+</html>
